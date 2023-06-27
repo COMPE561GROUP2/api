@@ -91,6 +91,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'touchgrass.wsgi.application'
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

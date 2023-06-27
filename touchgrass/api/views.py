@@ -7,8 +7,14 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import PostSerializer, AdminMessageSerializer
-from api.models import Post, AdminMessage
+from .serializers import PostSerializer, AdminMessageSerializer, ProfileSerializer
+from api.models import Post, AdminMessage, Profile
+
+
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -30,6 +36,14 @@ def getRoutes(request):
     ]
 
     return Response(routes)
+
+
+@api_view(['GET'])
+def getProfile(request):
+    profile_owner = request.profile_owner
+    profile = Profile.objects.get(owner=profile_owner)
+    serializer = ProfileSerializer(profile)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getPosts(request):
