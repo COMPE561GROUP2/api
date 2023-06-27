@@ -14,15 +14,28 @@ Installs pipenv on your computer
 
 Activates the project virtual enviroment
 
-### `python -m pipenv install --dev`
+### `pipenv install --dev`
 
 Install project dependencies outlined in Pipfile
 
+### `exit`
+
+Exit the virtual enviroment
 
 ## Development
 
 Navigate to the `/touchgrass` directory within api
 
+### `python manage.py createsuperuser`
+
+Create a super user
+
+### `python manage.py migrate`
+
+Migrate database table updates to the server
+
 ### `python manage.py runserver`
 
 Start up the development server
+
+### Open `localhost:8000` on your browser
