@@ -7,16 +7,11 @@ from rest_framework import status
 
 class AccountsTest(APITestCase):
     def setUp(self):
-        # We want to go ahead and originally create a user. 
         self.test_user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
-
-        # URL for creating an account.
         self.create_url = reverse('account-create')
 
     def test_create_user(self):
-        """
-        Ensure we can create a new user and a valid token is created with it.
-        """
+
         data = {
                 'username': 'foobar',
                 'email': 'foobar@example.com',
@@ -33,9 +28,6 @@ class AccountsTest(APITestCase):
 
 
     def test_create_user_with_short_password(self):
-        """
-        Ensures user is not created for password lengths less than 8.
-        """
 
         data = {
                 'username': 'foobar',

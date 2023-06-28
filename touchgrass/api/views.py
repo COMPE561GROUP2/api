@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .serializers import PostSerializer, AdminMessageSerializer, ProfileSerializer
 from api.models import Post, AdminMessage, Profile
-
+from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework import status
@@ -38,12 +38,45 @@ def getRoutes(request):
     return Response(routes)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def getProfile(request):
-    profile_owner = request.profile_owner
-    profile = Profile.objects.get(owner=profile_owner)
-    serializer = ProfileSerializer(profile)
-    return Response(serializer.data)
+    username = request.data['user']
+    
+    try:
+        owner = User.objects.get(username=username)
+        profile = Profile.objects.get(user_id=owner.pk)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+    except Profile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def addProfile(request):
+    username = request.data['user']
+    user = User.objects.get(username=username)
+    profile_exists = Profile.objects.filter(pk=user.pk).exists()
+
+    if not profile_exists:
+
+        profile = Profile(
+            user_id=user,
+            username=user.username,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
+            bio=None
+        )
+        
+        profile.save()
+        return Response(status=status.HTTP_201_CREATED)
+    else:
+        return Response(status=status.HTTP_409_CONFLICT)
+
+        
+    
+
 
 @api_view(['GET'])
 def getPosts(request):

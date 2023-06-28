@@ -8,6 +8,9 @@ urlpatterns = [
     path('', views.getRoutes),
     path('posts/', views.getPosts),
 
+    path('profile/get', views.getProfile),
+    path('profile/add', views.addProfile),
+
     path('admin/messages/send', views.sendAdminMessage),
     path('admin/messages/', views.getAdminMessages),
 
