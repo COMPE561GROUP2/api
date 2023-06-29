@@ -74,8 +74,19 @@ def addProfile(request):
     else:
         return Response(status=status.HTTP_409_CONFLICT)
 
+
+@api_view(['PUT'])
+def editProfile(request):
+    username = request.data['user']
+    user = User.objects.get(username=username)
+    profile_exists = Profile.objects.filter(pk=user.pk).exists()
+
+    if profile_exists:
+        profile = Profile.objects.filter(pk=user.pk)
         
-    
+
+    else:
+        return Response(status=status.HTTP_409_CONFLICT)
 
 
 @api_view(['GET'])
